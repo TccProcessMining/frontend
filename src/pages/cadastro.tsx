@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { DetailedHTMLProps, ImgHTMLAttributes, useState } from "react"
 import {
 	TextField,
 	Button,
@@ -7,26 +7,23 @@ import {
 	Link,
 
 } from "@material-ui/core"
+import logo from '../assets/images/logo.png'
 
 const useStyles = makeStyles((theme) => ({
 	div: {
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		marginTop: theme.spacing(35),
+		marginTop: theme.spacing(25)
+	},
+	imagem: {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+	},
 
-	},
-	a: {
-		paddingTop: '100px',
-		marginBottom: '100px',
-		color: '#FE6B8B'
-	},
-	img: {
-		width: theme.spacing(30),
-		height: theme.spacing(10),
-	},
 	button: {
-		marginTop: theme.spacing(1),
+		marginTop: theme.spacing(4),
 		background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
 		border: 0,
 		borderRadius: 3,
@@ -38,21 +35,23 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: "20px",
 		fontWeight: 500,
 	},
-	imagem: {
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center"
+	img: {
+		width: theme.spacing(30),
+		height: theme.spacing(10),
 	},
 }))
 
-export default function Login() {
+export default function Cadastro() {
 	const classes = useStyles()
+	const [name, setName] = useState("")
 	const [email, setEmail] = useState("")
 	const [senha, setSenha] = useState("")
 
 	return (
+		// bugando nessa div
 		<div className={classes.div}> 
-			<form 
+			
+			<form
 				onSubmit={(event) => {
 					event.preventDefault()
 				}}
@@ -60,6 +59,20 @@ export default function Login() {
 				<div className={classes.imagem}>
 					<img className={classes.img} src='https://res.cloudinary.com/dyuwmrtpw/image/upload/v1631074058/mine_a_supvft.svg' alt="MineLogo"/>
 				</div>
+				
+
+        <TextField
+					value={name}
+					onChange={(event) => {
+						setName(event.target.value)
+					}}
+					id="name"
+					label="Name"
+					variant="outlined"
+					margin="normal"
+					fullWidth
+				/>
+
 				<TextField
 					value={email}
 					onChange={(event) => {
@@ -71,6 +84,7 @@ export default function Login() {
 					margin="normal"
 					fullWidth
 				/>
+
 				<TextField
 					value={senha}
 					onChange={(event) => {
@@ -83,26 +97,28 @@ export default function Login() {
 					fullWidth
 				/>
 
-				<Link
-					className={classes.a}
-					onClick={() => {
-						console.log("clicked button")
-						location.href = "http://localhost:3000/cadastro"
+        <TextField
+					value={senha}
+					onChange={(event) => {
+						setSenha(event.target.value)
 					}}
-				>
-					Não tem cadastro ainda? clique aqui
-				</Link>
+					id="senha-again"
+					label="Repetir Senha"
+					variant="outlined"
+					margin="normal"
+					fullWidth
+				/>
 
 				<Link
 					component="button"
 					variant="body2"
 					onClick={() => {
 						console.log("clicked button")
-						location.href = "http://localhost:3000/dashboard"
+						location.href = "http://localhost:3000/"
 					}}
 					className={classes.button}
 				>
-					Entrar
+					Cadastrar
 				</Link>
 			</form>
 		</div>
