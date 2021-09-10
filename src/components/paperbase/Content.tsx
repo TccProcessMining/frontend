@@ -30,7 +30,7 @@ const styles = (theme: Theme) =>
     },
     adicionarArquivos: {
       marginRight: theme.spacing(1),
-      background: '#FF8E53'
+      background: '#FF354D'
     },
     contentWrapper: {
       margin: '40px 16px',

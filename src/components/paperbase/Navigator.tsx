@@ -51,7 +51,7 @@ const styles = (theme: Theme) =>
       color: theme.palette.common.white,
     },
     itemActiveItem: {
-      color: "#FF8E53",
+      color: "#FF354D",
     },
     adicionarProjeto: {
       color: 'white',

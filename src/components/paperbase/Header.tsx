@@ -15,7 +15,7 @@ const styles = (theme: Theme) =>
   createStyles({
     secondaryBar: {
       zIndex: 0,
-      background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'
+      background: 'linear-gradient(45deg, #FF354D 30%, #FFD974 90%)'
     },
     menuButton: {
       marginLeft: -theme.spacing(1),
@@ -34,7 +34,7 @@ const styles = (theme: Theme) =>
       borderColor: lightColor,
     },
     colorHeader: {
-      background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'
+      background: 'linear-gradient(45deg, #FF354D 30%, #FFD974 90%)'
     }
 
   });
