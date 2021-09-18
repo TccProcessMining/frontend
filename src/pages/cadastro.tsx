@@ -1,13 +1,10 @@
-import React, { DetailedHTMLProps, ImgHTMLAttributes, useState } from "react"
+import React, { useState } from "react"
 import {
 	TextField,
-	Button,
 	makeStyles,
-	Container,
 	Link,
-
 } from "@material-ui/core"
-import logo from '../assets/images/logo.png'
+import api from "../services/api"
 
 const useStyles = makeStyles((theme) => ({
 	div: {
@@ -50,8 +47,21 @@ export default function Cadastro() {
 	return (
 		<div className={classes.div}> 
 			<form
-				onSubmit={(event) => {
+				onSubmit={async (event) => {
 					event.preventDefault()
+					if(name !== "" && senha !== "" && email !== "" ){
+						await api.post("/users/signup",{
+							name,
+							mail: email,
+							password: senha,
+						}).then((response) => {
+							location.href = "http://localhost:3000/"
+							console.log(response)
+						}).catch((error) => {
+							alert(error.message)
+							throw new Error(error)
+						})
+					}
 				}}
 			>
 				<div className={classes.imagem}>
@@ -68,6 +78,7 @@ export default function Cadastro() {
 					variant="outlined"
 					margin="normal"
 					fullWidth
+					required
 				/>
 
 				<TextField
@@ -78,8 +89,10 @@ export default function Cadastro() {
 					id="email"
 					label="Email"
 					variant="outlined"
+					type="email"
 					margin="normal"
 					fullWidth
+					required
 				/>
 
 				<TextField
@@ -91,28 +104,15 @@ export default function Cadastro() {
 					label="Senha"
 					variant="outlined"
 					margin="normal"
+					type="password"
 					fullWidth
+					required
 				/>
 
-        <TextField
-					value={senha}
-					onChange={(event) => {
-						setSenha(event.target.value)
-					}}
-					id="senha-again"
-					label="Repetir Senha"
-					variant="outlined"
-					margin="normal"
-					fullWidth
-				/>
 
 				<Link
 					component="button"
 					variant="body2"
-					onClick={() => {
-						console.log("clicked button")
-						location.href = "http://localhost:3000/"
-					}}
 					className={classes.button}
 				>
 					Cadastrar

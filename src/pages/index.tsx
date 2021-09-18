@@ -1,13 +1,10 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
 	TextField,
-	Button,
 	makeStyles,
-	Container,
 	Link,
-
 } from "@material-ui/core"
-
+import api from "../services/api"
 const useStyles = makeStyles((theme) => ({
 	div: {
 		display: "flex",
@@ -49,12 +46,24 @@ export default function Login() {
 	const classes = useStyles()
 	const [email, setEmail] = useState("")
 	const [senha, setSenha] = useState("")
+	const [token , setToken] = useState("")
 
 	return (
 		<div className={classes.div}> 
 			<form 
-				onSubmit={(event) => {
+				onSubmit={async (event) => {
 					event.preventDefault()
+					if(email !== "" && senha !== ""){
+						await api.post('/login', { mail: email, password: senha})
+						.then((response) => {
+							location.href = "http://localhost:3000/dashboard"
+							localStorage.setItem('jwt_token', response.data.access_token)
+							// console.log(response.data.access_token)
+						}).catch((error) => {
+							// alert(error.message)
+							throw new Error(error)
+						})
+					}
 				}}
 			>
 				<div className={classes.imagem}>
@@ -68,6 +77,7 @@ export default function Login() {
 					id="email"
 					label="Email"
 					variant="outlined"
+					type="email"
 					margin="normal"
 					fullWidth
 				/>
@@ -79,6 +89,7 @@ export default function Login() {
 					id="senha"
 					label="Senha"
 					variant="outlined"
+					type='password'
 					margin="normal"
 					fullWidth
 				/>
@@ -96,10 +107,6 @@ export default function Login() {
 				<Link
 					component="button"
 					variant="body2"
-					onClick={() => {
-						console.log("clicked button")
-						location.href = "http://localhost:3000/dashboard"
-					}}
 					className={classes.button}
 				>
 					Entrar
