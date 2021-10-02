@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
@@ -8,6 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import { getProjects } from '../../hooks/getData';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
@@ -44,7 +45,8 @@ interface HeaderProps extends WithStyles<typeof styles> {
 }
 
 function Header(props: HeaderProps) {
-  const { classes, onDrawerToggle } = props;
+  const { classes, onDrawerToggle} = props;
+  const [ projects, setProjects] = useState([])
 
   return (
     <React.Fragment>
@@ -69,7 +71,7 @@ function Header(props: HeaderProps) {
             <Grid item>
             </Grid>
             <Grid item>
-              <IconButton color="inherit" className={classes.iconButtonAvatar}>
+              <IconButton color="inherit" className={classes.iconButtonAvatar} onClick={() => {location.href = "http://localhost:3000/"}}>
       	        <AccountBoxIcon fontSize="large" />
               </IconButton>
             </Grid>
@@ -86,7 +88,7 @@ function Header(props: HeaderProps) {
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                Teste
+                Arquivos
               </Typography>
             </Grid>
             <Grid item>

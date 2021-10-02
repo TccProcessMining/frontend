@@ -5,6 +5,7 @@ import {
 	Link,
 } from "@material-ui/core"
 import api from "../services/api"
+
 const useStyles = makeStyles((theme) => ({
 	div: {
 		display: "flex",
@@ -58,9 +59,7 @@ export default function Login() {
 						.then((response) => {
 							location.href = "http://localhost:3000/dashboard"
 							localStorage.setItem('jwt_token', response.data.access_token)
-							// console.log(response.data.access_token)
 						}).catch((error) => {
-							// alert(error.message)
 							throw new Error(error)
 						})
 					}

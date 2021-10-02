@@ -169,7 +169,7 @@ const styles = createStyles({
 export interface PaperbaseProps extends WithStyles<typeof styles> {}
 
 function Paperbase(props: PaperbaseProps) {
-  const { classes } = props;
+  const { classes, ...rest } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -194,7 +194,7 @@ function Paperbase(props: PaperbaseProps) {
           </Hidden>
         </nav>
         <div className={classes.app}>
-          <Header onDrawerToggle={handleDrawerToggle} />
+          <Header onDrawerToggle={handleDrawerToggle} {...rest}/>
           <main className={classes.main}>
             <Content />
           </main>
