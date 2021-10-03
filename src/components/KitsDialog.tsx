@@ -1,5 +1,5 @@
-import { Button, DialogContent, DialogTitle, makeStyles, TextField} from "@material-ui/core";
-import React, { useState } from "react";
+import { Button, DialogContent, DialogTitle, makeStyles} from "@material-ui/core";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
@@ -36,65 +36,48 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function KitDialog({productId}){
-  console.log(productId)
   const classes = useStyles()
-  const [data,setData] = useState(null)
-  
+  // const [data,setData] = useState([])
+  const formData  = new FormData();
+
+  const onFileChange = (event) => {
+    console.log(event.target.files[0])
+    if(event.target && event.target.files[0]){
+      formData.append("file", event.target.files[0])
+    }
+  }
+
+  const onSubmitFile = async(event) => {
+    event.preventDefault()
+    if(formData !== null){
+      let jwt_token = localStorage.getItem('jwt_token')
+      await fetch(`http://localhost:8080/projects/${productId}/upload`, {
+       method: "POST",
+       headers: {'Authorization': jwt_token},
+       body: formData // ver aqui o file subir 
+     }).then((response) => {
+      console.log(response.blob())
+     }).catch((error) => {
+       alert(error.message)
+       throw new Error(error)
+     });
+     }else{
+       alert('Nao foi possivel subir nem arquivo, selecione primeiramente o arquivo')
+     }
+  }
 
   return (
       <DialogContent>
         <DialogTitle className={classes.title}> Adicionar Arquivo </DialogTitle>
-        <input type="file" className={classes.input} onChange={(event) =>{setData(event.target.value)
-        console.log(event.target.value)}}/>
+        <input type="file" className={classes.input} 
+          onChange={onFileChange}/>
 
         <Button
         variant="contained" 
         color="primary" 
         fullWidth
         className={classes.button}
-        onClick={
-        async (event) => {
-          event.preventDefault()
-
-          if(data !== null){
-           let jwt_token = localStorage.getItem('jwt_token')
-            const formData  = new FormData();
-            formData.append("file", data[0])
-            await fetch(`http://localhost:8080/projects/${productId}/upload`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                  Authorization: `${jwt_token}`,
-                },
-                body: JSON.stringify({"file": data[0]}) // ver aqui o file subir 
-              }).then((response) => {
-                console.log(response)
-              }).catch((error) => {
-                alert(error.message)
-                throw new Error(error)
-              });
-            
-          //   await $.ajax({
-          //     method: "POST",
-          //     url: `http://localhost:8080/projects/${productId}/upload`,
-          //     headers: { "Authorization": jwt_token},
-          //     data: formData,
-          //     dataType: 'json',
-          //     cache: false,
-          //     processData: false,
-          //     contentType: false
-          // }).done((data) => {
-          //     console.log(data)
-          // }).fail((err) => {
-          //   alert(err)
-          //   // throw new Error(error)
-          // });
-
-          }else{
-            alert('Nao foi possivel subir nem arquivo, seecione primeiramente o arquivo')
-          }
-        }
-        }>
+        onClick={onSubmitFile}>
         Adicionar
       </Button>
       </DialogContent>

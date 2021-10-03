@@ -200,9 +200,53 @@ function Content(props: ContentProps) {
             <DateRangeIcon fontSize="large" />
           </Button>
         </div>
+        
+        <div className={classes.getData}>
+
+          <Button>
+            <label>Aplicar analise de datas </label>
+            <DateRangeIcon fontSize="large" 
+            onClick={async() => {
+              let jwt_token = localStorage.getItem('jwt_token')
+              let url = `http://localhost:8080/projects/${projectId}/analyseDates`;
+              let response = await fetch(url, {
+                method: "POST",
+                headers: { 
+                  'Accept': 'application/json',
+                  'Authorization': `${jwt_token}`
+                }
+              });
+              const analise = await response; // read response body and parse as JSON
+              // console.log(arquivo.dataOfProjects)
+              console.log(analise)
+            }} />
+          </Button>
+        </div>
+
+        <div className={classes.getData}>
+          <Button>
+            <label>Aplicar arrumacao das datas</label>
+            <DateRangeIcon fontSize="large" 
+            onClick={async() => {
+              let jwt_token = localStorage.getItem('jwt_token')
+              let url = `http://localhost:8080/projects/${projectId}/applyDates`;
+              let response = await fetch(url, {
+                method: "POST",
+                headers: { 
+                  'Accept': 'application/json',
+                  'Authorization': `${jwt_token}`
+                }
+              });
+              const analise = await response; // read response body and parse as JSON
+              // console.log(arquivo.dataOfProjects)
+              console.log(analise)
+            }} />
+          </Button>
+        </div>
+
         <div className={classes.getAtivi}>
           <Button>
-            <label>Aplicar analise de atividades e datas</label>
+            <label>Aplicar analise de atividades </label>
             <MergeTypeIcon fontSize="large" 
             onClick={async() => {
               let jwt_token = localStorage.getItem('jwt_token')
@@ -220,14 +264,35 @@ function Content(props: ContentProps) {
             }} />
           </Button>
         </div>
+        
+        <div className={classes.getAtivi}>
+          <Button>
+            <label>Aplicar arrumacao das atividades</label>
+            <MergeTypeIcon fontSize="large" 
+            onClick={async() => {
+              let jwt_token = localStorage.getItem('jwt_token')
+              let url = `http://localhost:8080/projects/${projectId}/applyActivitys`;
+              let response = await fetch(url, {
+                method: "POST",
+                headers: { 
+                  'Accept': 'application/json',
+                  'Authorization': `${jwt_token}`
+                }
+              });
+              const analise = await response; // read response body and parse as JSON
+              // console.log(arquivo.dataOfProjects)
+              console.log(analise)
+            }} />
+          </Button>
+        </div>
+        
         <div className={classes.getApp}>
           <Button>
             <label>Baixar XES</label>
             <GetAppIcon fontSize="large" onClick={() => {alert("a")}}/>
           </Button>
         </div>
-    </div>
-
+      </div>
       </div>
     </Paper>
   );
