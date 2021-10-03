@@ -25,12 +25,12 @@ import Link from 'next/link'
 //   },
 // ];
 
-const children = [
-  {id: 'f40d657c-5c2a-44c3-82c6-e2baec70bd59', name: 'teste'},
-  {id: '1a42cf2e-48a9-48d1-a225-029bf7a3bb84', name: 'teste123'},
-  {id: '1cee2d87-c833-44ac-9aeb-e8627a057a0e', name: 'luccatest'},
-  {id: 'b70625e0-0473-408c-9eed-7acc9da59637', name: 'testeClass'},
-];
+// const children = [
+//   {id: 'f40d657c-5c2a-44c3-82c6-e2baec70bd59', name: 'teste'},
+//   {id: '1a42cf2e-48a9-48d1-a225-029bf7a3bb84', name: 'teste123'},
+//   {id: '1cee2d87-c833-44ac-9aeb-e8627a057a0e', name: 'luccatest'},
+//   {id: 'b70625e0-0473-408c-9eed-7acc9da59637', name: 'testeClass'},
+// ];
 
 
 const styles = (theme: Theme) =>
@@ -99,10 +99,9 @@ function Navigator(props: NavigatorProps) {
             }
           });
           const projeto = await response.json(); // read response body and parse as JSON
-          // setProjects(projeto.)
           setProjects(projeto.projectList)
         } catch (error) {
-            alert(error.message)
+            throw new Error(error)
         }
     };
       fetchData()
@@ -112,7 +111,7 @@ function Navigator(props: NavigatorProps) {
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
         <ListItem className={clsx(classes.firebase, classes.item, classes.itemCategory)}>
-          <img  src='https://res.cloudinary.com/dyuwmrtpw/image/upload/v1631074058/mine_a_supvft.svg' alt="MineLogo"/>
+          <img  src='https://res.cloudinary.com/dyuwmrtpw/image/upload/v1631074058/mine_a_supvft.svg' alt="MineLogo" onClick={()=> {location.href = "http://localhost:3000/dashboard"}}/>
         </ListItem>
         <ListItem className={clsx(classes.item, classes.itemCategory)}>
           <ListItemIcon className={classes.itemIcon}>

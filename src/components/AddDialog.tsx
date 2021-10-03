@@ -74,7 +74,6 @@ export default function AddProject(){
               }).then((response) => {
                 console.log(response)
               }).catch((error) => {
-                alert(error.message)
                 throw new Error(error)
               });
 

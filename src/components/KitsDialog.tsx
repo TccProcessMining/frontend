@@ -1,6 +1,5 @@
 import { Button, DialogContent, DialogTitle, makeStyles, TextField} from "@material-ui/core";
 import React, { useState } from "react";
-import api from "../services/api";
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
@@ -36,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function KitDialog(){
+export default function KitDialog({productId}){
+  console.log(productId)
   const classes = useStyles()
   const [data,setData] = useState(null)
   
@@ -56,25 +56,43 @@ export default function KitDialog(){
         async (event) => {
           event.preventDefault()
 
-          // if(data !== null){
-          //  let jwt_token = localStorage.getItem('jwt_token')
-          //   await fetch(`http://localhost:8080/projects/${token_project_id}//upload`, {
-          //       method: "POST",
-          //       headers: {
-          //         "Content-Type": "application/json",
-          //         Authorization: `${jwt_token}`,
-          //       },
-          //       body: data
-          //     }).then((response) => {
-          //       console.log(response)
-          //     }).catch((error) => {
-          //       alert(error.message)
-          //       throw new Error(error)
-          //     });
+          if(data !== null){
+           let jwt_token = localStorage.getItem('jwt_token')
+            const formData  = new FormData();
+            formData.append("file", data[0])
+            await fetch(`http://localhost:8080/projects/${productId}/upload`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Authorization: `${jwt_token}`,
+                },
+                body: JSON.stringify({"file": data[0]}) // ver aqui o file subir 
+              }).then((response) => {
+                console.log(response)
+              }).catch((error) => {
+                alert(error.message)
+                throw new Error(error)
+              });
             
-          // }else{
-          //   alert('Nao foi possivel subir nem arquivo, seecione primeiramente o arquivo')
-          // }
+          //   await $.ajax({
+          //     method: "POST",
+          //     url: `http://localhost:8080/projects/${productId}/upload`,
+          //     headers: { "Authorization": jwt_token},
+          //     data: formData,
+          //     dataType: 'json',
+          //     cache: false,
+          //     processData: false,
+          //     contentType: false
+          // }).done((data) => {
+          //     console.log(data)
+          // }).fail((err) => {
+          //   alert(err)
+          //   // throw new Error(error)
+          // });
+
+          }else{
+            alert('Nao foi possivel subir nem arquivo, seecione primeiramente o arquivo')
+          }
         }
         }>
         Adicionar

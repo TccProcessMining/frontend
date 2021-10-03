@@ -8,7 +8,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import { getProjects } from '../../hooks/getData';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
@@ -45,7 +44,7 @@ interface HeaderProps extends WithStyles<typeof styles> {
 }
 
 function Header(props: HeaderProps) {
-  const { classes, onDrawerToggle} = props;
+  const { classes, onDrawerToggle, projectId} = props;
   const [ projects, setProjects] = useState([])
 
   return (
@@ -88,7 +87,7 @@ function Header(props: HeaderProps) {
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                Arquivos
+                {projectId}
               </Typography>
             </Grid>
             <Grid item>

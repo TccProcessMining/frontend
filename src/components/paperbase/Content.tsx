@@ -8,10 +8,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import { Dialog, DialogContent, DialogTitle, List, Popover, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Dialog, DialogContent, DialogTitle, List, Popover, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@material-ui/core';
 import KitsDialog from '../KitsDialog';
-import api from '../../services/api';
-import { getArquivos } from '../../hooks/getData';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import DateRangeIcon from '@material-ui/icons/DateRange';
+import MergeTypeIcon from '@material-ui/icons/MergeType';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -31,18 +32,11 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-];
 
 const styles = (theme: Theme) =>
   createStyles({
     paper: {
-      maxWidth: 1280,
+      maxWidth: 1600,
       margin: 'auto',
       overflow: 'hidden',
     },
@@ -65,30 +59,60 @@ const styles = (theme: Theme) =>
     table: {
       minWidth: 700,
     },
+    divIcons: {
+      display: 'flex',
+      marginTop:theme.spacing(2),
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    getApp: {
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+      paddingLeft: 20,
+    },
+    getData: {
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+    },
+    getAtivi: {
+      flexDirection: 'column',
+      display: 'flex',
+      alignItems: 'center',
+      paddingRight: 10,
+    }
   });
 
-export interface ContentProps extends WithStyles<typeof styles> {}
+export interface ContentProps extends WithStyles<typeof styles> {
+}
 
 function Content(props: ContentProps) {
-  const { classes } = props;
+  const { classes, projectId } = props;
   const [openDialog, setOpenDialog] = useState(false)
   const [arquivos, setArquivos] = useState([])
   
-  
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const userToken = localStorage.getItem('user_token')
-  //       const arq = getArquivos(userToken) 
-  //       setArquivos( await Promise.resolve(arq))
-        
-  //     } catch (error) {
-          
-  //     }
-  // };
-  //   fetchData()
-  // },[])
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let jwt_token = localStorage.getItem('jwt_token')
+        let url = `http://localhost:8080/projects/${projectId}`;
+        let response = await fetch(url, {
+          method: "GET",
+          headers: { 
+            'Accept': 'application/json',
+            'Authorization': `${jwt_token}`
+          }
+        });
+        const arquivo = await response.json(); // read response body and parse as JSON
+        // console.log(arquivo.dataOfProjects)
+        setArquivos(arquivo.dataOfProjects)
+      } catch (error) {
+          // throw new Error(error)
+      }
+  };
+    fetchData()
+  },[arquivos])
   return (
     <Paper className={classes.paper}>
       <AppBar className={classes.searchBar} position="static" color="default" elevation={0}>
@@ -116,7 +140,7 @@ function Content(props: ContentProps) {
         </Toolbar>
       </AppBar>
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <KitsDialog></KitsDialog>
+        <KitsDialog productId={projectId}></KitsDialog>
       </Dialog>
       <div className={classes.contentWrapper}>
         <TableContainer component={Paper}>
@@ -124,14 +148,23 @@ function Content(props: ContentProps) {
           <TableHead>
             <TableRow>
               <StyledTableCell>Nome do arquivo</StyledTableCell>
-              <StyledTableCell align="center">Baixar aquivo XES</StyledTableCell>
-              <StyledTableCell align="center">Deletar arquivo</StyledTableCell>
-              <StyledTableCell align="center">Fazer analise de datas</StyledTableCell>
-              <StyledTableCell align="center">fazer analise de atividades</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+
+
+          {arquivos !== undefined ? (arquivos.map((row) => (
+              <TableRow key={row.id}>
+                <TableCell align="center">{row.name}</TableCell>
+              </TableRow>
+            ))) : (
+            <Typography color="textSecondary" align="center">
+              Nenhum projeto para esse usuario ainda
+            </Typography>
+          )  }
+            
+            
+            {/* {rows.map((row) => (
               <StyledTableRow key={row.name}>
                 <StyledTableCell component="th" scope="row">
                   {row.name}
@@ -141,13 +174,60 @@ function Content(props: ContentProps) {
                 <StyledTableCell align="center">{row.carbs}</StyledTableCell>
                 <StyledTableCell align="center">{row.protein}</StyledTableCell>
               </StyledTableRow>
-            ))}
+            ))} */}
           </TableBody>
         </Table>
+       
       </TableContainer>
-        {/* <Typography color="textSecondary" align="center">
-          Nenhum projeto para esse usuario ainda
-        </Typography> */}
+
+      <div className={classes.divIcons}>
+        <div className={classes.getData}>
+          <Button onClick={async () => {
+            let jwt_token = localStorage.getItem('jwt_token')
+            let url = `http://localhost:8080/projects/${projectId}/fixData`;
+            let response = await fetch(url, {
+              method: "POST",
+              headers: { 
+                'Accept': 'application/json',
+                'Authorization': `${jwt_token}`
+              }
+            });
+            const analise = await response; // read response body and parse as JSON
+            // console.log(arquivo.dataOfProjects)
+            console.log(analise)
+          }}>
+            <label>Padronização das datas</label>
+            <DateRangeIcon fontSize="large" />
+          </Button>
+        </div>
+        <div className={classes.getAtivi}>
+          <Button>
+            <label>Aplicar analise de atividades e datas</label>
+            <MergeTypeIcon fontSize="large" 
+            onClick={async() => {
+              let jwt_token = localStorage.getItem('jwt_token')
+              let url = `http://localhost:8080/projects/${projectId}/analysis`;
+              let response = await fetch(url, {
+                method: "POST",
+                headers: { 
+                  'Accept': 'application/json',
+                  'Authorization': `${jwt_token}`
+                }
+              });
+              const analise = await response; // read response body and parse as JSON
+              // console.log(arquivo.dataOfProjects)
+              console.log(analise)
+            }} />
+          </Button>
+        </div>
+        <div className={classes.getApp}>
+          <Button>
+            <label>Baixar XES</label>
+            <GetAppIcon fontSize="large" onClick={() => {alert("a")}}/>
+          </Button>
+        </div>
+    </div>
+
       </div>
     </Paper>
   );

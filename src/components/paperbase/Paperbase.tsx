@@ -187,6 +187,7 @@ function Paperbase(props: PaperbaseProps) {
               variant="temporary"
               open={mobileOpen}
               onClose={handleDrawerToggle}
+              {...rest}
             />
           </Hidden>
           <Hidden xsDown implementation="css">
@@ -196,7 +197,7 @@ function Paperbase(props: PaperbaseProps) {
         <div className={classes.app}>
           <Header onDrawerToggle={handleDrawerToggle} {...rest}/>
           <main className={classes.main}>
-            <Content />
+            <Content {...rest}/>
           </main>
           <footer className={classes.footer}>
             <Copyright />
