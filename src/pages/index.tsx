@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		marginTop: theme.spacing(35),
+		marginTop: theme.spacing(50),
 
 	},
 	a: {
@@ -96,7 +96,7 @@ export default function Login() {
 				<Link
 					className={classes.a}
 					onClick={() => {
-						console.log("clicked button")
+						// console.log("clicked button")
 						location.href = "http://localhost:3000/cadastro"
 					}}
 				>

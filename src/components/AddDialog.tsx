@@ -62,7 +62,7 @@ export default function AddProject(){
           async (event) => {
             event.preventDefault()
             if(name !== ""){
-              console.log(name)
+              // console.log(name)
               let jwt_token = localStorage.getItem('jwt_token')
 
               await fetch(`http://localhost:8080/projects/${name}`, {

@@ -93,12 +93,14 @@ function Navigator(props: NavigatorProps) {
           let jwt_token = localStorage.getItem('jwt_token')
           let url = 'http://localhost:8080/users';
           let response = await fetch(url, {
+            method: "GET",
             headers: { 
               'Accept': 'application/json',
               'Authorization': `${jwt_token}`
             }
           });
-          const projeto = await response.json(); // read response body and parse as JSON
+          const projeto = await response.json();
+          // console.log(projeto.projectList) // read response body and parse as JSON
           setProjects(projeto.projectList)
         } catch (error) {
             throw new Error(error)

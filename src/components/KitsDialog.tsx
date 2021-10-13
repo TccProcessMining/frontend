@@ -1,5 +1,6 @@
 import { Button, DialogContent, DialogTitle, makeStyles} from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
+// import {uploadOne} from '../lib/nestjsRepository'
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
@@ -37,33 +38,54 @@ const useStyles = makeStyles((theme) => ({
 
 export default function KitDialog({productId}){
   const classes = useStyles()
-  // const [data,setData] = useState([])
-  const formData  = new FormData();
+  const [files,setFiles] = useState()
 
   const onFileChange = (event) => {
     console.log(event.target.files[0])
     if(event.target && event.target.files[0]){
-      formData.append("file", event.target.files[0])
+      setFiles(event.target.files[0])
     }
   }
 
   const onSubmitFile = async(event) => {
     event.preventDefault()
-    if(formData !== null){
-      let jwt_token = localStorage.getItem('jwt_token')
-      await fetch(`http://localhost:8080/projects/${productId}/upload`, {
-       method: "POST",
-       headers: {'Authorization': jwt_token},
-       body: formData // ver aqui o file subir 
-     }).then((response) => {
-      console.log(response.blob())
-     }).catch((error) => {
-       alert(error.message)
-       throw new Error(error)
-     });
-     }else{
-       alert('Nao foi possivel subir nem arquivo, selecione primeiramente o arquivo')
-     }
+    let token = localStorage.getItem('jwt_token')
+    const form = new FormData();
+    form.append('file', files);
+
+    const response = await fetch(`http://localhost:8080/projects/${productId}/upload`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `${token}`,
+          // 'Content-Type': 'multipart/form-data'  
+        },
+        body: form
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.log(data)
+        // const { message } = data;
+        // throw new Error(message);
+    }
+
+    return data;
+    // if(form !== null){
+    //   let jwt_token = localStorage.getItem('jwt_token')
+    //   await fetch(`http://localhost:8080/projects/${productId}/upload`, {
+    //    method: "POST",
+    //    headers: {'Authorization': jwt_token},
+    //    body: form // ver aqui o file subir 
+    //  }).then((response) => {
+    //   console.log(response)
+    //  }).catch((error) => {
+    //    alert(error.message)
+    //    throw new Error(error)
+    //  });
+    //  }else{
+    //    alert('Nao foi possivel subir nem arquivo, selecione primeiramente o arquivo')
+    //  }
   }
 
   return (

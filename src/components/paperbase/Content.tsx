@@ -81,6 +81,10 @@ const styles = (theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       paddingRight: 10,
+    },
+    a: {
+      textDecoration: 'none',
+      textDecorationColor: 'black',
     }
   });
 
@@ -162,8 +166,7 @@ function Content(props: ContentProps) {
               Nenhum projeto para esse usuario ainda
             </Typography>
           )  }
-            
-            
+              
             {/* {rows.map((row) => (
               <StyledTableRow key={row.name}>
                 <StyledTableCell component="th" scope="row">
@@ -194,7 +197,7 @@ function Content(props: ContentProps) {
             });
             const analise = await response; // read response body and parse as JSON
             // console.log(arquivo.dataOfProjects)
-            console.log(analise)
+            // console.log(analise)
           }}>
             <label>Padronização das datas</label>
             <DateRangeIcon fontSize="large" />
@@ -202,7 +205,6 @@ function Content(props: ContentProps) {
         </div>
         
         <div className={classes.getData}>
-
           <Button>
             <label>Aplicar analise de datas </label>
             <DateRangeIcon fontSize="large" 
@@ -218,14 +220,14 @@ function Content(props: ContentProps) {
               });
               const analise = await response; // read response body and parse as JSON
               // console.log(arquivo.dataOfProjects)
-              console.log(analise)
+              // console.log(analise)
             }} />
           </Button>
         </div>
 
         <div className={classes.getData}>
           <Button>
-            <label>Aplicar arrumacao das datas</label>
+            <label>Aplicar arrumação das datas</label>
             <DateRangeIcon fontSize="large" 
             onClick={async() => {
               let jwt_token = localStorage.getItem('jwt_token')
@@ -239,7 +241,8 @@ function Content(props: ContentProps) {
               });
               const analise = await response; // read response body and parse as JSON
               // console.log(arquivo.dataOfProjects)
-              console.log(analise)
+              // console.log(analise)
+              alert("Iniciado a arrumação das atividades, espere até ser concluido")
             }} />
           </Button>
         </div>
@@ -260,14 +263,14 @@ function Content(props: ContentProps) {
               });
               const analise = await response; // read response body and parse as JSON
               // console.log(arquivo.dataOfProjects)
-              console.log(analise)
+              // console.log(analise)
             }} />
           </Button>
         </div>
         
         <div className={classes.getAtivi}>
           <Button>
-            <label>Aplicar arrumacao das atividades</label>
+            <label>Aplicar arrumação das atividades</label>
             <MergeTypeIcon fontSize="large" 
             onClick={async() => {
               let jwt_token = localStorage.getItem('jwt_token')
@@ -281,15 +284,18 @@ function Content(props: ContentProps) {
               });
               const analise = await response; // read response body and parse as JSON
               // console.log(arquivo.dataOfProjects)
-              console.log(analise)
+              // console.log(analise)
+              alert("Iniciado a arrumação das atividades, espere até ser concluido")
             }} />
           </Button>
         </div>
         
         <div className={classes.getApp}>
-          <Button>
-            <label>Baixar XES</label>
-            <GetAppIcon fontSize="large" onClick={() => {alert("a")}}/>
+          <Button >
+            <label>Baixar CSV</label>
+            <a href="./DB_fixFormat.xlsx" className={classes.a} download>
+              <GetAppIcon fontSize="large"/>
+            </a>
           </Button>
         </div>
       </div>
